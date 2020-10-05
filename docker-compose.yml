@@ -1,0 +1,21 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:1.19.2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+        - ./nginx:/etc/nginx/conf.d
+        - ./logs/nginx:/var/log/nginx
+        - ./certs:/etc/certs:ro
+    depends_on:
+        - bitwarden
+
+  bitwarden:
+    image: bitwardenrs/server:1.16.3-alpine
+    restart: unless-stopped
+    volumes:
+      - ./passdata:/data/
+
